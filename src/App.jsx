@@ -31,9 +31,7 @@ function App() {
       setListaColaboradores(BaseColaboradores);
     } else {
       const results = [...nuevaBaseDatos].filter((colaborador) =>
-        colaborador.nombre
-          .toLocaleLowerCase()
-          .includes(event.target.value.toLocaleLowerCase())
+        Object.values(colaborador).some(valor => String(valor).toLowerCase().includes(event.target.value))
       );
       setListaColaboradores(results);
     }
