@@ -1,13 +1,15 @@
-import Alert from 'react-bootstrap/Alert';
+import Alert from "react-bootstrap/Alert";
 
-function Alerta({color, mensajeAlerta}) {
+// alerta que se dispara en caso de que las condiciones de formulario se cumplan o no
+const FormAlert = ({ variant, exito, errores }) => {
   return (
     <>
-        <Alert className="alerta" variant={color}>
-          {mensajeAlerta}
-        </Alert>
+      <Alert className="bootstrap-alert" variant={variant}>
+        {exito}
+        {errores}
+      </Alert>
     </>
   );
-}
+};
 
-export default Alerta;
+export default FormAlert;

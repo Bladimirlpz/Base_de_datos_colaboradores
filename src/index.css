@@ -1,48 +1,9 @@
-@media (max-width:576px) {
-    #root {
-       display: flex;
-       flex-direction: column;
-       text-align: center;
-       align-items: center;
-       justify-content: center;
-       gap: 20px;
-       height: 100vh;
-   }
-   }
-   
-   @media (min-width:830px) {
-       #root {
-           height: 100vh;
-           width: 100vw;
-           padding: 30px;
-           display: grid;
-           grid-template-columns: 30% 30% 40%;
-           grid-template-rows: 15% 50% 35%;
-           grid-template-areas: 
-           "a a a"
-           "b b c"
-           "d d d";
-   
-       }
-       .titulo {
-           grid-area: a;
-       }
-       .listado {
-           grid-area: b;
-       }
-       .formulario {
-           
-           grid-area: c;
-           display: flex;
-           flex-direction: column;
-           justify-content: center;
-           padding: 15%;
-           
-       }
-       .buscador {
-           grid-area: d;
-           text-align: center;
-       }
-   }
-   
-   
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

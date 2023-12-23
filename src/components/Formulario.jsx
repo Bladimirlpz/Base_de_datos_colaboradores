@@ -1,126 +1,120 @@
-import Form from 'react-bootstrap/Form';
-import InputGroup from 'react-bootstrap/InputGroup';
-import Button from 'react-bootstrap/Button';
-import { useState } from 'react';
-import Alerta from './Alert';
-import BaseColaboradores from '../Colaboradores';
-import './Formulario.css'
+import Button from "react-bootstrap/Button";
+import "./Formulario.css";
 
-function Formulario({error,registrado,setError,setRegistrado}) {
-    const [nombre, setNombre] = useState("");
-    const [email, setEmail] = useState("");
-    const [edad, setEdad] = useState("");
-    const [cargo, setCargo] = useState("");
-    const [telefono, setTelefono] = useState("");
-    const validEmail = /^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/;
-    const [listadoUsuario, setListaUsuario] = useState(BaseColaboradores)
+const Formulario = ({
+  setListaColaboradores,
+  setExito,
+  setErrores,
+  setFormValue,
+  formValue,
+  nuevaBaseDatos,
+}) => {
+  // expresiones regulares para que elo usuario ingrese un nombre y correo válido
+  const validEmail = /^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/;
+  const validNombre = /^([a-zA-Z]+)(\s[a-zA-Z]+)*$/;
 
-    // Variables que guardan el valor de los input del formulario
-    const inputNombre = (e) => {
-        setNombre(e.target.value)
+  const enviarFormulario = (submit) => {
+    submit.preventDefault();
+    //Condicional que evalúa  que el campo no esté vacío
+    if (
+      formValue.nombre === "" &&
+      formValue.correo === "" &&
+      formValue.edad === "" &&
+      formValue.cargo === "" &&
+      formValue.telefono === ""
+    ) {
+      return setErrores("¡Completa todos los campos!"), setExito("");
+      //Condicional que evalúa que el nombre no esté vacío
+    } else if (formValue.nombre === "") {
+      return setErrores("Ingrese su nombre");
+      //Condicional que evalúa que el nombre tenga formato válido
+    } else if (!validNombre.test(formValue.nombre)) {
+      return setErrores("Formato de nombre invalido (ingrese solo letras)");
+      //Condicional que evalúa que el nombre no esté vacío
+    } else if (formValue.correo === "") {
+      return setErrores("Ingrese su correo");
+      //Condicional que evalúa que el mail sea válido y además que el campo no esté vacío
+    } else if (!validEmail.test(formValue.correo)) {
+      return setErrores("formato de correo inválido");
+      //Condicional que evalúa que la edad no esté vacía
+    } else if (formValue.edad === "") {
+      return setErrores("Ingrese su edad");
+      //Condicional que evalúa que el cargo no esté vacío
+    } else if (formValue.cargo === "") {
+      return setErrores("Ingrese su cargo");
+      //Condicional que evalúa un mínimo de caracteres para número telefónico
+    } else if (formValue.telefono.length < 9) {
+      return setErrores("Ingrese su número de teléfono completo");
+    } else {
+      setExito("¡Usuario añadido con éxito!");
     }
-    const inputEmail = (e) => {
-        setEmail(e.target.value)
-    }
-    const inputEdad = (e) => {
-        setEdad(e.target.value)
-    }
-    const inputCargo = (e) => {
-        setCargo(e.target.value)
-    }
-    const inputTelefono = (e) => {
-        setTelefono(e.target.value)
-    }
+    //Reseteando errores al no cumplirse las condiciones de arriba
+    setErrores("");
+    //Reseteando valores en inputs
+    setFormValue({
+      id: "",
+      nombre: "",
+      correo: "",
+      edad: "",
+      cargo: "",
+      telefono: "",
+    });
 
-    //Condicionales para Alert
-    const registrarse = (e) => {
-        e.preventDefault()
-    //Condicional para alerta del input nombre
-    if (nombre === ""){
-        return setError("Ingrese su nombre");
-    }
-    //Condicional para alerta del input email
-    else if (!validEmail.test(email) && email.length == 0){
-        return setError("Ingrese un correo valido");
-    }
-    //Condicional para alerta del input edad
-    else if (edad === ""){
-        return setError("Ingrese su Edad");
-    }
-    //Condicional para alerta del input Cargo
-    else if (cargo === ""){
-        return setError("Ingrese su Cargo");
-    }
-    //Condicional para alerta del input Telefono
-    else if (telefono.length <= 5 ){
-        return setError("Ingrese un numero de telefono valido");
-    }
-    //Condicional para alerta de registrado exitoso
-    else if 
-        (nombre.length > 4 &&
-        email.length != "" &&
-        edad > 0 &&
-        cargo != "" &&
-        telefono.length >= 6){
-            setRegistrado("!!!Colaborador registrado con exito¡¡¡")
-            setError("")
-            setListaUsuario([...listadoUsuario, { id:listadoUsuario.length+1,nombre:nombre, correo:email,edad:edad,cargo:cargo,telefono:telefono}])
-            setNombre("")
-            setEmail("")
-            setEdad("")
-            setCargo("")
-            setTelefono("")
-        }
-    
-    }
+    //función que añade un colaborador siempre que se cumplan todas las condiciones
+    setListaColaboradores(nuevaBaseDatos);
+  };
 
-    return (
-        <>
-            <form className='formulario' onSubmit={registrarse}>
-                <InputGroup size="sm" value={nombre} onChange={inputNombre}>
-                    <Form.Control
-                        placeholder='Nombre del Colaborador'
-                        aria-label="Large"
-                        aria-describedby="inputGroup-sizing-sm"
-                    />
-                </InputGroup>
-                <InputGroup size="sm" value={email} onChange={inputEmail}>
-                    <Form.Control
-                        type='email'
-                        placeholder='Email del Colaborador'
-                        aria-label="Large"
-                        aria-describedby="inputGroup-sizing-sm"
-                    />
-                </InputGroup>
-                <InputGroup size="sm" value={edad} onChange={inputEdad}>
-                    <Form.Control
-                        type='number'
-                        placeholder='Edad del Colaborador'
-                        aria-label="Large"
-                        aria-describedby="inputGroup-sizing-sm"
-                    />
-                </InputGroup>
-                <InputGroup size="sm" value={cargo} onChange={inputCargo}>
-                    <Form.Control
-                        placeholder='Cargo del Colaborador'
-                        aria-label="Small"
-                        aria-describedby="inputGroup-sizing-sm"
-                    />
-                </InputGroup>
-                <InputGroup size="sm" value={telefono} onChange={inputTelefono}>
-                    <Form.Control
-                        type='number'
-                        placeholder='Telefono del Colaborador'
-                        aria-label="Large"
-                        aria-describedby="inputGroup-sizing-sm"
-                    />
-                </InputGroup>
-                <Button bg="primary" size='sm' type='submit'>Agregar Colaborador</Button>
-                {error? (<Alerta color="danger" mensajeAlerta={error}/>):null}
-                {registrado? (<Alerta color="success" mensajeAlerta={registrado}/>):null}
-            </form>
-        </>
-    );
-}
+  //funcion que setea los valores del input para añadir un colaborador
+  const updateForm = (event) => {
+    setFormValue({ ...formValue, [event.target.name]: event.target.value });
+  };
+  // apartado que renderiza el formulario
+  return (
+    <div>
+      <form
+        className="container__formulario"
+        onSubmit={(e) => enviarFormulario(e)}
+      >
+        <h1>Agregar colaborador</h1>
+        <input
+          type="text"
+          placeholder="Nombre del colaborador"
+          name="nombre"
+          value={formValue.nombre}
+          onChange={updateForm}
+        />
+        <input
+          type="text"
+          placeholder="Mail del colaborador"
+          name="correo"
+          value={formValue.correo}
+          onChange={updateForm}
+        />
+        <input
+          type="number"
+          placeholder="Edad del colaborador"
+          name="edad"
+          value={formValue.edad}
+          onChange={updateForm}
+        />
+        <input
+          type="text"
+          placeholder="Cargo del colaborador"
+          name="cargo"
+          value={formValue.cargo}
+          onChange={updateForm}
+        />
+        <input
+          type="number"
+          placeholder="Teléfono del colaborador"
+          name="telefono"
+          value={formValue.telefono}
+          onChange={updateForm}
+        />
+        <Button type="submit">Agregar colaborador</Button>
+      </form>
+    </div>
+  );
+};
 
 export default Formulario;
