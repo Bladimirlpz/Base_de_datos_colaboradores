@@ -61,7 +61,8 @@ const Formulario = ({
     });
 
     //función que añade un colaborador siempre que se cumplan todas las condiciones
-    setListaColaboradores(nuevaBaseDatos);
+   return setListaColaboradores(nuevaBaseDatos)
+   
   };
 
   //funcion que setea los valores del input para añadir un colaborador

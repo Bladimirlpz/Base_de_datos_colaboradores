@@ -9,11 +9,9 @@ import { useState } from "react";
 
 function App() {
   // estados que almancenan valores (base de datos, errores, valores de inputs y filtrado)
-  const [listaColaboradores, setListaColaboradores] =
-    useState(BaseColaboradores);
+  const [listaColaboradores, setListaColaboradores] = useState(BaseColaboradores);
   const [errores, setErrores] = useState(false);
   const [exito, setExito] = useState("");
-  const [searchPerson, setSearchPerson] = useState("");
   const [formValue, setFormValue] = useState({
     id: "",
     nombre: "",
@@ -22,33 +20,23 @@ function App() {
     cargo: "",
     telefono: "",
   });
-
-  //funcion que filtra los colaboradores por el valor que se ingresa en el input buscador
   const nuevaBaseDatos = [...listaColaboradores, formValue];
-  const buscarColaborador = (event) => {
-    setSearchPerson(event.target.value);
-    if (event.target.value === "") {
-      setListaColaboradores(BaseColaboradores);
-    } else {
-      const results = [...nuevaBaseDatos].filter((colaborador) =>
-        Object.values(colaborador).some(valor => String(valor).toLowerCase().includes(event.target.value))
-      );
-      setListaColaboradores(results);
-    }
-  };
-
+  const [filtro,setFiltro] = useState("")
   return (
     <div className="container">
       <div className="listado__container">
         <h1>Lista de colaboradores</h1>
         <Buscador
-          searchPerson={searchPerson}
-          buscarColaborador={buscarColaborador}
+          nuevaBaseDatos={nuevaBaseDatos}
+          setListaColaboradores={setListaColaboradores}
+          listaColaboradores={listaColaboradores}
+          filtro={filtro}
+          setFiltro={setFiltro}
         ></Buscador>
         <Listado
           listaColaboradores={listaColaboradores}
           setListaColaboradores={setListaColaboradores}
-          setSearchPerson={setSearchPerson}
+          filtro={filtro}
         ></Listado>
       </div>
       <div>
@@ -62,6 +50,7 @@ function App() {
           nuevaBaseDatos={nuevaBaseDatos}
           formValue={formValue}
           setFormValue={setFormValue}
+          setFiltro={setFiltro}
         ></Formulario>
         {errores ? (
           <FormAlert
@@ -70,13 +59,7 @@ function App() {
             setErrores={setErrores}
           ></FormAlert>
         ) : null}
-        {exito ? (
-          <FormAlert
-            variant="success"
-            exito={exito}
-            setExito={setExito}
-          ></FormAlert>
-        ) : null}
+        {exito ? ( <FormAlert variant="success" exito={exito} setExito={setExito}></FormAlert>) : null}
       </div>
     </div>
   );
