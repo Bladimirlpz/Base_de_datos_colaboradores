@@ -3,15 +3,15 @@ import Form from "react-bootstrap/Form";
 // componente que realiza la búsqueda que se ingresa en el input buscador
 const Buscador = ({ setFiltro, listaColaboradores }) => {
   const buscarColaborador = (event) => {
-    if (event.target.value === "") {
-      setFiltro(listaColaboradores);
-    } else {
+    if (event.target.value !== "") {
       const results = [...listaColaboradores].filter((colaborador) =>
         Object.values(colaborador).some((valor) =>
-          String(valor).toLowerCase().includes(event.target.value)
+          String(valor).toLowerCase().includes(event.target.value.toLowerCase())
         )
       );
       setFiltro(results);
+    } else {
+      setFiltro("");
     }
   };
   return (
